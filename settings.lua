@@ -3561,10 +3561,12 @@ function AssignedCombinesSetting:toggleAssignedCombine(index)
 	local possibleCombines = self:getPossibleCombines()
 	local combine =	possibleCombines[newIndex]
 	if combine then 
-		if self.table[combine] then 
-			self.table[combine] = nil
-		else
-			self.table[combine] = true
+		if g_server then
+			if self.table[combine] then 
+				self.table[combine] = nil
+			else
+				self.table[combine] = true
+			end
 		end
 		AssignedCombinesEvents:sendEvent(self.vehicle,self.NetworkTypes.TOGGLE,combine)
 		self.vehicle.cp.driver:refreshHUD()
