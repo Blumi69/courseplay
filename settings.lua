@@ -3538,18 +3538,31 @@ end
 
 function AssignedCombinesSetting:onReadStream(streamId)
 	while streamReadBool(streamId) do 
-		local combine = NetworkUtil.getObject(NetworkUtil.readNodeObjectId(streamId))
-		self.table[combine] = true
+		if self.combineIDs == nil then
+			self.combineIDs = {}
+		end
+		local combineId = NetworkUtil.readNodeObjectId(streamId)
+		self.combineIDs[combineId] = true
+	end
+end
+
+-- while onReadStream not every vehicle is created,
+-- so assign them after every vehicle is init with the NetworkIds
+function AssignedCombinesSetting:fixOnReadStream()
+	if self.combineIDs and next(self.combineIDs) then 
+		for combineId,isAssigned in pairs(self.combineIDs) do
+			local combine = NetworkUtil.getObject(combineId)
+			self.table[combine] = true
+		end
+		self.combineIDs = nil
 	end
 end
 
 function AssignedCombinesSetting:onWriteStream(streamId)
-	if next(self.table) then 
-		for combine,isAssigned in pairs(self.table) do 
-			if isAssigned then 
-				streamWriteBool(streamId, true)
-				NetworkUtil.writeNodeObjectId(streamId, NetworkUtil.getObjectId(combine))
-			end
+	for combine,isAssigned in pairs(self.table) do 
+		if isAssigned then 
+			streamWriteBool(streamId, true)
+			NetworkUtil.writeNodeObjectId(streamId, NetworkUtil.getObjectId(combine))
 		end
 	end
 	streamWriteBool(streamId, false)
@@ -3560,20 +3573,20 @@ function AssignedCombinesSetting:toggleAssignedCombine(index)
 	local newIndex = index-2+self.offsetHead
 	local possibleCombines = self:getPossibleCombines()
 	local combine =	possibleCombines[newIndex]
+	self:fixOnReadStream()
 	if combine then 
-		if g_server then
-			if self.table[combine] then 
-				self.table[combine] = nil
-			else
-				self.table[combine] = true
-			end
+		if self.table[combine] then 
+			self.table[combine] = nil
+		else
+			self.table[combine] = true
 		end
-		AssignedCombinesEvents:sendEvent(self.vehicle,self.NetworkTypes.TOGGLE,combine)
+		AssignedCombinesEvents:sendEvent(self.vehicle,combine)
 		self.vehicle.cp.driver:refreshHUD()
 	end
 end
 
 function AssignedCombinesSetting:toggleAssignedCombineFromNetwork(combine)
+	self:fixOnReadStream()
 	if self.table[combine] then 
 		self.table[combine] = nil
 	else
@@ -3583,6 +3596,7 @@ function AssignedCombinesSetting:toggleAssignedCombineFromNetwork(combine)
 end
 
 function AssignedCombinesSetting:getTexts()
+	self:fixOnReadStream()
 	local x = 1+self.offsetHead
 	local line = 1
 	local texts = {}

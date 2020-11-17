@@ -116,6 +116,16 @@ function CombineUnloadAIDriver:setHudContent()
 	courseplay.hud:setCombineUnloadAIDriverContent(self.vehicle,self.assignedCombinesSetting)
 end
 
+function CombineUnloadAIDriver:onWriteStream(streamId)
+	self.assignedCombinesSetting:onWriteStream(streamId)
+	AIDriver.onWriteStream(self,streamId)
+end
+
+function CombineUnloadAIDriver:onReadStream(streamId)
+	self.assignedCombinesSetting:onReadStream(streamId)
+	AIDriver.onReadStream(self,streamId)
+end
+
 function CombineUnloadAIDriver:debug(...)
 	local combineName = self.combineToUnload and nameNum(self.combineToUnload) or 'N/A'
 	courseplay.debugVehicle(self.debugChannel, self.vehicle, ' -> ' .. combineName .. ': ' .. string.format( ... ))

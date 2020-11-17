@@ -1340,7 +1340,7 @@ function courseplay:onReadUpdateStream(streamId, timestamp, connection)
 			if streamReadBool(streamId) then 
 				self.cp.waypointIndex = streamReadInt32(streamId)
 			else 
-				self.cp.waypointIndex = nil
+				self.cp.waypointIndex = 0
 			end
 			if streamReadBool(streamId) then -- is infoText~=nil ?
 				if streamReadBool(streamId) then -- has infoText changed
