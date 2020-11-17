@@ -424,7 +424,7 @@ function courseplay.hud:setContent(vehicle)
 
 	if vehicle.Waypoints[vehicle.cp.waypointIndex] ~= nil or vehicle.cp.isRecording or vehicle.cp.recordingIsPaused or g_server == nil then
 		-- waypoints
-		if not vehicle.cp.isRecording and not vehicle.cp.recordingIsPaused then
+		if not vehicle.cp.isRecording and not vehicle.cp.recordingIsPaused and vehicle.cp.waypointIndex then
 			local str = ('%d/%d'):format(vehicle.cp.waypointIndex, vehicle.cp.numWaypoints);
 			if str:len() > 7 then
 				vehicle.cp.hud.content.bottomInfo.waypointTextSmall = str;
