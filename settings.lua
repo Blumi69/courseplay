@@ -2806,9 +2806,9 @@ function ShowMapHotspotSetting:onWriteStream(stream)
 	SettingList.onWriteStream(self,stream)
 	if self.mapHotspot~=nil then 
 		streamWriteBool(stream,true)
-		if self.vehicle.currentHelper and self.vehicle.currentHelper.index then 
+		if self.vehicle.currentHelper and self.vehicle.currentHelper.index ~= nil then 
 			streamWriteBool(stream,true)
-			streamWriteUInt8(streamId, self.vehicle.currentHelper.index)
+			streamWriteUInt8(stream, self.vehicle.currentHelper.index)
 		else 
 			streamWriteBool(stream,false)
 		end
@@ -2821,7 +2821,7 @@ function ShowMapHotspotSetting:onReadStream(stream)
 	SettingList.onReadStream(self,stream)
 	if streamReadBool(stream) then
 		if streamReadBool(stream) then
-			local helperIndex = streamReadUInt8(streamId)
+			local helperIndex = streamReadUInt8(stream)
 			self.vehicle.currentHelper = g_helperManager:getHelperByIndex(helperIndex)
 		end
 		--add to activeCoursePlayers
@@ -4048,9 +4048,6 @@ function ShovelStopAndGoSetting:init(vehicle)
 end
 
 --[[
-
-shovelStopAndGo
-
 ---@class SearchCombineAutomaticallySetting : BooleanSetting
 SearchCombineAutomaticallySetting = CpObject(BooleanSetting)
 function SearchCombineAutomaticallySetting:init(vehicle)
