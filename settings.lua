@@ -1826,7 +1826,7 @@ end
 
 function SettingList:validateCurrentValue()
 	local new = self:checkAndSetValidValue(self.current)
-	self:setToIx(new)
+	self:setToIx(new,true)
 end
 
 function SettingList:getDebugString()
@@ -3580,7 +3580,7 @@ function AssignedCombinesSetting:toggleAssignedCombine(index)
 		else
 			self.table[combine] = true
 		end
-		AssignedCombinesEvents:sendEvent(self.vehicle,combine)
+		AssignedCombinesEvents.sendEvent(self.vehicle,combine)
 		self.vehicle.cp.driver:refreshHUD()
 	end
 end

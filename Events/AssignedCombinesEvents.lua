@@ -41,7 +41,7 @@ function AssignedCombinesEvents:run(connection) -- wir fuehren das empfangene ev
 	end;
 end
 
-function AssignedCombinesEvents:sendEvent(vehicle,combine)
+function AssignedCombinesEvents.sendEvent(vehicle,combine)
 	if g_server ~= nil then
 		g_server:broadcastEvent(AssignedCombinesEvents:new(vehicle,combine), nil, nil, vehicle);
 		courseplay.debugVehicle(5,vehicle,"AssignedCombinesEvents: broadcast course event ")
