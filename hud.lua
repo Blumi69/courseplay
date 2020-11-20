@@ -1167,7 +1167,7 @@ function courseplay.hud:updatePageContent(vehicle, page)
 					else
 						self:disableButtonWithFunction(vehicle,page,'toggle',vehicle.cp.settings.automaticUnloadingOnField)
 					end
-				elseif entry.functionToCall == 'toggleShovelStopAndGo' then
+				elseif entry.functionToCall == 'shovelStopAndGo:toggle' then
 					vehicle.cp.hud.content.pages[page][1][1].text = courseplay:loc('COURSEPLAY_SHOVEL_LOADING_POSITION');
 					vehicle.cp.hud.content.pages[page][2][1].text = courseplay:loc('COURSEPLAY_SHOVEL_TRANSPORT_POSITION');
 					vehicle.cp.hud.content.pages[page][3][1].text = courseplay:loc('COURSEPLAY_SHOVEL_PRE_UNLOADING_POSITION');

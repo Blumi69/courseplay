@@ -4043,7 +4043,7 @@ end
 ---@class ShovelStopAndGoSetting : BooleanSetting
 ShovelStopAndGoSetting = CpObject(BooleanSetting)
 function ShovelStopAndGoSetting:init(vehicle)
-	BooleanSetting.init(self, 'shovelStopAndGo','COURSEPLAY_SHOVEL_STOP_AND_GO', 'COURSEPLAY_SHOVEL_STOP_AND_GO', vehicle, {'COURSEPLAY_MANUAL_SEARCH','COURSEPLAY_AUTOMATIC_SEARCH'}) 
+	BooleanSetting.init(self, 'shovelStopAndGo','COURSEPLAY_SHOVEL_STOP_AND_GO', 'COURSEPLAY_SHOVEL_STOP_AND_GO', vehicle) 
 	self:set(true)
 end
 
