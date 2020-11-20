@@ -561,7 +561,7 @@ function courseplay:onLoad(savegame)
 	self.cp.settings:addSetting(ConvoyMaxDistanceSetting,self) -- do we need this one ?
 	self.cp.settings:addSetting(FrontloaderToolPositionsSetting,self)
 	self.cp.settings:addSetting(AugerPipeToolPositionsSetting,self)
-
+	self.cp.settings:addSetting(ShovelStopAndGoSetting,self)
 	---@type SettingsContainer
 	self.cp.courseGeneratorSettings = SettingsContainer("courseGeneratorSettings")
 	self.cp.courseGeneratorSettings:addSetting(CenterModeSetting, self)

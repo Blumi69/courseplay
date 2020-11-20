@@ -517,6 +517,13 @@ function AIDriver:driveVehicleToLocalPosition(dt, allowedToDrive, moveForwards, 
 	AIVehicleUtil.driveToPoint(self.vehicle, dt, self.acceleration, allowedToDrive, moveForwards, ax, az, maxSpeed, false)
 end
 
+--[[ emergency brake, maybe for mode 4/8 refill at trigger ??
+	local oldFunc = self.vehicle.getBrakeForce
+	self.vehicle.getBrakeForce = function () return 10000000 end
+	AIVehicleUtil.driveToPoint(self.vehicle, dt, self.acceleration, allowedToDrive, moveForwards, ax, az, maxSpeed, false)
+	self.vehicle.getBrakeForce = oldFunc
+]]--
+
 -- many courseplay modes control the vehicle through the lx/lz normalized local directions.
 -- this is an interface for those modes to drive the vehicle.
 function AIDriver:driveVehicleInDirection(dt, allowedToDrive, moveForwards, lx, lz, maxSpeed)
