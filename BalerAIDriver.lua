@@ -70,23 +70,26 @@ function BalerAIDriver:handleBaler()
 	local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
 	local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
 	
-	--copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
-	local freeFillLevel = capacity - fillLevel
-    if freeFillLevel < self.slowDownFillLevel then
-		maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
-		self:setSpeed(maxSpeed)
-	end
-	
-	--baler is full or is unloading so wait!
-	if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
-		self:setSpeed(0)
-	elseif self.baler:getCanBeTurnedOn() then -- restart baler after unloading
-		 self.baler:setIsTurnedOn(true, false); 
-	end
-	if self.baler.setPickupState ~= nil then -- lower pickup after unloading
-		if self.baler.spec_pickup ~= nil and not self.baler.spec_pickup.isLowered then
-			self.baler:setPickupState(true, false)
-			courseplay:debug('lowering baler pickup')
+	if self.balerSpec.baleUnloadAnimationName ~= nil or self.balerSpec.allowsBaleUnloading then	
+		self:debugSparse("baleUnloadAnimationName: %s, allowsBaleUnloading: %s",self.balerSpec.baleUnloadAnimationName,self.balerSpec.allowsBaleUnloading)
+		--copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
+		local freeFillLevel = capacity - fillLevel
+		if freeFillLevel < self.slowDownFillLevel then
+			maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
+			self:setSpeed(maxSpeed)
+		end
+		
+		--baler is full or is unloading so wait!
+		if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
+			self:setSpeed(0)
+		 elseif self.baler:getCanBeTurnedOn() then -- restart baler after unloading
+			 self.baler:setIsTurnedOn(true, false); 
+		end
+		if self.baler.setPickupState ~= nil then -- lower pickup after unloading
+			if self.baler.spec_pickup ~= nil and not self.baler.spec_pickup.isLowered then
+				self.baler:setPickupState(true, false)
+				self:debug('lowering baler pickup')
+			end
 		end
 	end
 	return true
